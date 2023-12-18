@@ -21,7 +21,8 @@ jobs:
           target: ${{ matrix.target }}
           override: true
 
-      - uses: actions-rs/cargo@v1
+      - name: Build Arifact
+        uses: actions-rs/cargo@v1
         with:
           command: build
           args: --release --target=${{ matrix.target }}
@@ -33,16 +34,16 @@ jobs:
           TARGET: ${{ matrix.target }}
         run: echo "::set-output name=target::${TARGET%%-*}"
 
-      - name: Rename Build Artifacts (Linux)
-        run: echo argent.${{ steps.arch.outputs.target }}
+      - name: Upload Build Artifacts (Linux)
         if: ${{ contains(matrix.target, 'linux') }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: argent.${{ steps.arch.outputs.target }}
+          path: target/*/release/argent
 
-      - name: Rename Build Artifacts (Windows)
-        run: echo argent-${{ steps.arch.outputs.target }}.exe
+      - name: Upload Build Artifacts (Windows)
         if: ${{ contains(matrix.target, 'windows') }}
-
-        # - name: Upload x86 Linux Artifact
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: libmoodle-x86.so
-      #     path: ./target/x86_64-unknown-linux-gnu/release/libmoodle.so
+        uses: actions/upload-artifact@v4
+        with:
+          name: argent-${{ steps.arch.outputs.target }}.exe
+          path: target/*/release/argent.exe
