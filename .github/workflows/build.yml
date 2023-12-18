@@ -33,10 +33,15 @@ jobs:
           TARGET: ${{ matrix.target }}
         run: echo "::set-output name=target::${TARGET%%-*}"
 
-      - name: Rename Build Artifacts
-        shell: true
-        run: echo ${{ steps.arch.outputs.target }}
-      # - name: Upload x86 Linux Artifact
+      - name: Rename Build Artifacts (Linux)
+        run: echo argent.${{ steps.arch.outputs.target }}
+        if: ${{ contains(matrix.target, 'linux') }}
+
+      - name: Rename Build Artifacts (Windows)
+        run: echo argent-${{ steps.arch.outputs.target }}.exe
+        if: ${{ contains(matrix.target, 'windows') }}
+
+        # - name: Upload x86 Linux Artifact
       #   uses: actions/upload-artifact@v4
       #   with:
       #     name: libmoodle-x86.so
