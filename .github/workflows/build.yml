@@ -1,0 +1,30 @@
+name: Build Argent Artifacts
+on: push
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target:
+          - x86_64-unknown-linux-gnu
+          - x86_64-pc-windows-gnu
+          -
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: ${{ matrix.target }}
+          override: true
+      - uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release --target=${{ matrix.target }}
+          use-cross: true
+      # - name: Upload x86 Linux Artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: libmoodle-x86.so
+      #     path: ./target/x86_64-unknown-linux-gnu/release/libmoodle.so
