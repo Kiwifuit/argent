@@ -14,16 +14,28 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
           target: ${{ matrix.target }}
           override: true
+
       - uses: actions-rs/cargo@v1
         with:
           command: build
           args: --release --target=${{ matrix.target }}
           use-cross: true
+
+      - name: Get architecture
+        id: arch
+        env:
+          TARGET: ${{ matrix.target }}
+        run: echo "::set-output name=target::${TARGET%%-*}"
+
+      - name: Rename Build Artifacts
+        shell: true
+        run: echo ${{ steps.arch.outputs.target }}
       # - name: Upload x86 Linux Artifact
       #   uses: actions/upload-artifact@v4
       #   with:
