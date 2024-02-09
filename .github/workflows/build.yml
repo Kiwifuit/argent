@@ -25,13 +25,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install x86 Build Dependencies
-        if: startsWith(${{ matrix.target }}, 'i386')
-        run: sudo dpkg --add-architecture i386 && sudo apt-get update && sudo apt-get install build-essential
+      # - name: Install x86 Build Dependencies
+      #   if: startsWith(${{ matrix.target }}, 'i386')
+      #   run: sudo dpkg --add-architecture i386 && sudo apt-get update && sudo apt-get install build-essential mingw-w64 mingw-w32
 
-      - name: Install x86_64 Build Dependencies
-        if: startsWith(${{ matrix.target }}, 'x86_64')
-        run: sudo apt-get update && sudo apt-get install build-essential
+      # - name: Install x86_64 Build Dependencies
+      #   if: startsWith(${{ matrix.target }}, 'x86_64')
+      #   run: sudo apt-get update && sudo apt-get install build-essential
 
       - uses: actions-rs/toolchain@v1
         name: Setup rust
@@ -39,11 +39,13 @@ jobs:
           target: ${{ matrix.target }}
           toolchain: stable
           override: true
+          default: false
 
       - uses: actions-rs/cargo@v1
         name: Build release (${{ matrix.target }})
         with:
           command: build
+          use-cross: true
           args: --release --target ${{ matrix.target }}
 
       - name: Prepare artifacts (linux)
