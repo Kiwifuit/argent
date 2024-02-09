@@ -39,11 +39,11 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: argent.${{ steps.arch.outputs.target }}
-          path: target/*/release/argent
+          path: target/${{ matrix.target }}/release/argent
 
       - name: Upload Build Artifacts (Windows)
         if: ${{ contains(matrix.target, 'windows') }}
         uses: actions/upload-artifact@v4
         with:
           name: argent-${{ steps.arch.outputs.target }}.exe
-          path: target/*/release/argent.exe
+          path: target/${{ matrix.target }}/release/argent.exe
