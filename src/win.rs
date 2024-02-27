@@ -1,10 +1,13 @@
+#[cfg(not(target_os = "windows"))]
+use std::env::consts::OS;
+
 #[cfg(target_os = "windows")]
 use winreg::RegKey;
 
 #[cfg(target_os = "windows")]
 use winreg::enums::*;
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct WindowsSystemInformation {
     pub product_key: String,
     pub product_name: String,
@@ -34,6 +37,16 @@ pub fn get_information() -> WindowsSystemInformation {
         installed_date: inst_date,
         installed_time: inst_time,
     }
+}
+
+#[cfg(not(target_os = "windows"))]
+pub fn get_information() -> WindowsSystemInformation {
+    println!(
+        "Cannot get the current system information (system is {}, supposed to be windows)",
+        OS
+    );
+
+    WindowsSystemInformation::default()
 }
 
 #[cfg(target_os = "windows")]
