@@ -18,7 +18,7 @@ pub struct WindowsSystemInformation {
 
 #[cfg(target_os = "windows")]
 pub fn get_information() -> WindowsSystemInformation {
-    let reg = RegKey::predef(HKEY_CURRENT_MACHINE);
+    let reg = RegKey::predef(HKEY_LOCAL_MACHINE);
     let current_version = reg
         .open_subkey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion")
         .expect(
@@ -75,7 +75,11 @@ fn get_registered_owner(current: &RegKey) -> String {
 #[cfg(target_os = "windows")]
 fn get_install_datetime(current: &RegKey) -> (u64, u64) {
     (
-        current.get_value("InstallDate"),
-        current.get_value("InstallTime"),
+        current
+            .get_value("InstallDate")
+            .expect("Expected key InstallDate to exist"),
+        current
+            .get_value("InstallTime")
+            .expect("Expected key InstallTime to exist"),
     )
 }
