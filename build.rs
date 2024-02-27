@@ -4,12 +4,15 @@ use winres::WindowsResource;
 use std::env::consts::OS;
 
 #[cfg(windows)]
-const MANIFEST_FILE = include_str!("./appmanifest.xml");
+const MANIFEST_FILE: &str = include_str!("./appmanifest.xml");
 
 #[cfg(windows)]
 fn append_resource() {
     let mut res = WindowsResource::new();
 
+    res.set_manifest(MANIFEST_FILE);
+
+    println!("cargo:warning=The `appmanifest.xml` file is added onto the executable");
     res.compile().unwrap();
 }
 
