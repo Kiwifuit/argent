@@ -10,8 +10,10 @@ license-file = "LICENSE"
 reqwest = "0.11.24"
 
 [target.'cfg(windows)'.dependencies]
-winres = "0.1.12"
 winreg = "0.52.0"
+
+[target.'cfg(windows)'.build-dependencies]
+winres = "0.1.12"
 
 
 [package.metadata.bundle]
@@ -22,3 +24,7 @@ long_description = """
 Argent, named after the main character in Youjou Senki, is a program designed
 to extract a computer's information, such as the product key, and relay it somewhere
 """
+
+[package.metadata.winres]
+FileDescription = "Extracts computer information :3"
+ProductName = "Argent"
