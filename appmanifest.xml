@@ -1,9 +1,0 @@
-<assembly xmlns="urn:microsoft-com:asm.v1" manifestVersion="1.0">
-  <trustInfo xmlns="urn:microsoft-com:asm.v3">
-    <security>
-      <requestedPriveledges>
-        <requestedExecutionLevel level="requireAdministrator" uiAccess="false" />
-      </requestedPriveledges>
-    </security>
-  </trustInfo>
-</assembly>
